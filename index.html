@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>For My Love — A Story Written in Moments</title>
+  <meta name="description" content="A private birthday film, written in moments." />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340..500;1,9..144,380..460&family=Inter:wght@300;400;500&display=swap');
+
+    :root {
+      --ink: #0b0908;
+      --ink-soft: #16110f;
+      --ivory: #f3ece1;
+      --ivory-dim: #d9cfc0;
+      --champagne: #e6d3b3;
+      --burgundy: #5c2333;
+      --burgundy-bright: #8a3348;
+      --beige: #cdb89e;
+      --line: rgba(243, 236, 225, 0.14);
+
+      --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+      --sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+
+      --vh: 1vh;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+
+    html {
+      background: var(--ink);
+      scroll-behavior: auto;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--ink);
+      color: var(--ivory);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    img, video { max-width: 100%; display: block; }
+
+    ::selection { background: var(--burgundy); color: var(--ivory); }
+
+    a:focus-visible, button:focus-visible {
+      outline: 1.5px solid var(--champagne);
+      outline-offset: 4px;
+    }
+
+    .screen {
+      min-height: 100vh;
+      min-height: calc(var(--vh, 1vh) * 100);
+      position: relative;
+      width: 100%;
+    }
+
+    .grain {
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 5;
+    }
+
+    .vignette {
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.55) 100%);
+      z-index: 4;
+    }
+
+    .eyebrow-none { display: none; }
+
+    h1, h2, h3, .display {
+      font-family: var(--serif);
+      font-weight: 460;
+      line-height: 1.06;
+      letter-spacing: -0.01em;
+      margin: 0;
+      color: var(--ivory);
+    }
+
+    .display-xl { font-size: clamp(2.6rem, 11vw, 6rem); }
+    .display-lg { font-size: clamp(2.1rem, 8.5vw, 4.4rem); }
+    .display-md { font-size: clamp(1.6rem, 6vw, 3rem); }
+    .display-sm { font-size: clamp(1.25rem, 4.6vw, 2rem); }
+
+    p, .body-text {
+      font-family: var(--sans);
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--ivory-dim);
+      max-width: 34ch;
+    }
+
+    .body-text.wide { max-width: 44ch; }
+
+    .italic-serif {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 380;
+    }
+
+    .center-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      height: 100%;
+      padding: 8vh 7vw;
+      position: relative;
+      z-index: 6;
+    }
+
+    .stack { display: flex; flex-direction: column; gap: 1.1em; }
+
+    .progress-nav {
+      position: fixed;
+      z-index: 90;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      opacity: 0;
+      transition: opacity 0.6s var(--ease);
+      pointer-events: none;
+    }
+    .progress-nav.visible { opacity: 1; pointer-events: auto; }
+    .progress-nav .tick {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(243,236,225,0.28);
+      transition: all 0.4s var(--ease);
+      cursor: pointer;
+    }
+    .progress-nav .tick.active {
+      background: var(--champagne);
+      height: 18px;
+      border-radius: 3px;
+    }
+
+    @media (max-width: 680px) {
+      .progress-nav { display: none; }
+      .progress-line-mobile {
+        position: fixed;
+        top: 0; left: 0;
+        height: 2px;
+        background: var(--champagne);
+        z-index: 95;
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+    }
+    @media (min-width: 681px) {
+      .progress-line-mobile { display: none; }
+    }
+
+    .music-control {
+      position: fixed;
+      z-index: 95;
+      left: 18px;
+      bottom: 18px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: rgba(11,9,8,0.55);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), border-color 0.3s;
+      pointer-events: none;
+    }
+    .music-control.visible { opacity: 0.85; transform: translateY(0); pointer-events: auto; }
+    .music-control:hover { opacity: 1; border-color: var(--champagne); }
+    .music-control svg { width: 16px; height: 16px; }
+    .music-control .bar { fill: var(--ivory); transition: all 0.25s var(--ease); transform-origin: bottom; }
+    .music-control.playing .bar1 { animation: eq 0.9s ease-in-out infinite; }
+    .music-control.playing .bar2 { animation: eq 0.9s ease-in-out infinite 0.2s; }
+    .music-control.playing .bar3 { animation: eq 0.9s ease-in-out infinite 0.4s; }
+    @keyframes eq { 0%,100% { transform: scaleY(0.4); } 50% { transform: scaleY(1); } }
+
+    .intro {
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .intro__bg {
+      position: absolute; inset: 0;
+      object-fit: cover;
+      opacity: 0.16;
+      filter: grayscale(0.4) blur(1px);
+      transform: scale(1.08);
+    }
+    .intro__content {
+      position: relative;
+      z-index: 6;
+      text-align: center;
+      padding: 0 8vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.4em;
+    }
+    .intro__line1 {
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 4.6vw, 2rem);
+      color: var(--ivory);
+      opacity: 0;
+    }
+    .intro__line2 {
+      font-family: var(--sans);
+      font-size: clamp(0.95rem, 2.6vw, 1.15rem);
+      color: var(--ivory-dim);
+      white-space: pre-line;
+      line-height: 1.8;
+      opacity: 0;
+    }
+    .intro__btn {
+      opacity: 0;
+      margin-top: 0.6em;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      color: var(--ink);
+      background: var(--champagne);
+      border: none;
+      padding: 1.1em 2.2em;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.35s var(--ease), background 0.35s var(--ease);
+    }
+    .intro__btn:hover { transform: translateY(-2px); background: var(--ivory); }
+    .intro__btn:active { transform: translateY(0); }
+
+    .hero { overflow: hidden; }
+    .hero__photo {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: 50% 22%;
+      transform: scale(1.12);
+      transition: transform 8s var(--ease-soft);
+    }
+    .hero.in-view .hero__photo { transform: scale(1); }
+    .hero__scrim {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(11,9,8,0.35) 0%, rgba(11,9,8,0.15) 38%, rgba(11,9,8,0.75) 100%);
+      z-index: 3;
+    }
+    .hero__content {
+      position: absolute;
+      left: 0; right: 0; bottom: 9vh;
+      z-index: 6;
+      padding: 0 7vw;
+      text-align: left;
+    }
+    .hero__heading { white-space: pre-line; }
+    .hero__sub { margin-top: 0.9em; }
+    .hero__hint {
+      position: absolute;
+      bottom: 3.2vh; left: 0; right: 0;
+      text-align: center;
+      z-index: 6;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      color: var(--ivory-dim);
+      animation: hint-float 2.6s ease-in-out infinite;
+    }
+    @keyframes hint-float { 0%,100% { transform: translateY(0); opacity: 0.7; } 50% { transform: translateY(6px); opacity: 1; } }
+
+    .fellfor { background: var(--ink); padding: 14vh 0 10vh; }
+    .fellfor__words {
+      display: flex; flex-direction: column; gap: 0.15em;
+      padding: 0 7vw;
+      margin-bottom: 12vh;
+    }
+    .fellfor__word {
+      font-family: var(--serif);
+      font-size: clamp(2.4rem, 11vw, 5.5rem);
+      color: var(--ivory-dim);
+      opacity: 0.16;
+      transition: opacity 0.9s var(--ease), color 0.9s var(--ease);
+    }
+    .fellfor__word.active { opacity: 1; color: var(--ivory); }
+
+    .fellfor__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6vh 4vw;
+      padding: 0 7vw;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .fellfor__img-wrap {
+      overflow: hidden;
+      border-radius: 3px;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
+    }
+    .fellfor__img-wrap.in { opacity: 1; transform: translateY(0); }
+    .fellfor__img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .fellfor__img-wrap.large { aspect-ratio: 4/5; }
+    .fellfor__img-wrap.small { aspect-ratio: 3/4; max-width: 62%; margin-left: auto; }
+    .fellfor__img-wrap.full { aspect-ratio: 16/10; }
+    .fellfor__img-wrap.overlap { aspect-ratio: 3/4; max-width: 70%; margin-top: -8vh; margin-left: 6vw; box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+
+    .fellfor__closing { padding: 14vh 7vw 0; text-align: center; }
+    .fellfor__closing p { margin: 0 auto 0.6em; max-width: 30ch; }
+
+    @media (min-width: 760px) {
+      .fellfor__grid { grid-template-columns: 1.1fr 0.9fr; }
+      .fellfor__img-wrap.full { grid-column: 1 / -1; }
+    }
+
+    .usintro {
+      background: var(--ink);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .usintro__inner {
+      position: relative;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 5vh; padding: 10vh 6vw;
+      z-index: 6; text-align: center;
+    }
+    .usintro__video-frame {
+      width: min(78vw, 300px);
+      aspect-ratio: 9/16;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 40px 90px rgba(0,0,0,0.55);
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 1.2s var(--ease), transform 1.2s var(--ease);
+    }
+    .usintro__video-frame.in { opacity: 1; transform: scale(1); }
+    .usintro__video-frame video { width: 100%; height: 100%; object-fit: cover; }
+    .usintro__lines { display: flex; flex-direction: column; gap: 0.5em; }
+    .usintro__line {
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 4.4vw, 2.1rem);
+      opacity: 0.15;
+      transition: opacity 0.9s var(--ease);
+    }
+    .usintro__line.active { opacity: 1; }
+
+    .wall { background: var(--ink); padding: 14vh 0 16vh; overflow: hidden; }
+    .wall__title { text-align: center; padding: 0 7vw; margin-bottom: 8vh; }
+    .wall__grid {
+      display: flex; flex-direction: column;
+      gap: 9vh;
+      padding: 0 9vw;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    @media (min-width: 900px) {
+      .wall__grid {
+        max-width: 1100px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 6vh 3vw;
+      }
+      .wall__item { width: 30%; }
+      .wall__item:nth-child(2n) { margin-top: 8vh; }
+    }
+    .wall__item {
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px) rotate(var(--r, 0deg));
+      transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+    }
+    .wall__item.in { opacity: 1; transform: translateY(0) rotate(var(--r, 0deg)); }
+    .wall__media-frame {
+      aspect-ratio: 4/5;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 24px 50px rgba(0,0,0,0.4);
+    }
+    .wall__media-frame img, .wall__media-frame video { width: 100%; height: 100%; object-fit: cover; }
+    .wall__caption {
+      margin-top: 0.9em;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 0.98rem;
+      color: var(--ivory-dim);
+      opacity: 0;
+      transition: opacity 1.1s var(--ease) 0.3s;
+    }
+    .wall__item.in .wall__caption { opacity: 1; }
+
+    .versions { background: var(--ink); }
+    .versions__slide {
+      min-height: 100vh; min-height: calc(var(--vh,1vh) * 100);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .versions__media {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(0.6);
+      transform: scale(1.05);
+      transition: transform 6s var(--ease-soft);
+    }
+    .versions__slide.in-view .versions__media { transform: scale(1); }
+    .versions__label {
+      position: relative; z-index: 5;
+      font-size: clamp(1.6rem, 6.5vw, 3rem);
+      text-align: center; padding: 0 8vw;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
+    }
+    .versions__slide.in-view .versions__label { opacity: 1; transform: translateY(0); }
+    .versions__closing {
+      min-height: 60vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 8vh 7vw;
+    }
+
+    .lovelist { background: var(--ink); }
+    .love__item {
+      min-height: 100vh; min-height: calc(var(--vh,1vh) * 100);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .love__item-bg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: center 20%;
+      opacity: 0.28;
+    }
+    .love__item-scrim { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11,9,8,0.92) 20%, rgba(11,9,8,0.35) 100%); }
+    .love__item-content { position: relative; z-index: 5; padding: 0 8vw; max-width: 620px; }
+    .love__n { font-family: var(--serif); font-style: italic; color: var(--beige); font-size: 1rem; opacity: 0.8; }
+    .love__title { margin-top: 0.3em; }
+    .love__body { margin-top: 0.7em; }
+    .love__final { text-align: center; padding: 16vh 7vw; }
+    .love__final .pre { color: var(--ivory-dim); margin-bottom: 0.8em; }
+
+    .timeline { background: var(--ink); padding: 14vh 0 16vh; position: relative; }
+    .timeline__rail {
+      position: absolute;
+      left: 50%; top: 20vh; bottom: 10vh;
+      width: 1px;
+      background: var(--line);
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+    @media (max-width: 680px) { .timeline__rail { left: 8vw; } }
+
+    .timeline__era {
+      position: relative; z-index: 2;
+      max-width: 620px; margin: 0 auto 20vh;
+      padding: 0 8vw;
+      text-align: center;
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
+    }
+    .timeline__era.in { opacity: 1; transform: translateY(0); }
+    .timeline__era:last-child { margin-bottom: 0; }
+    .timeline__dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--champagne);
+      margin: 0 auto 1.4em;
+    }
+    .timeline__label { font-size: 0.7rem; letter-spacing: 0.16em; color: var(--beige); }
+    .timeline__date { font-size: 0.75rem; color: var(--ivory-dim); margin-top: 0.3em; }
+    .timeline__text { margin: 1.2em auto 2.2em; }
+    .timeline__media-row {
+      display: flex; gap: 3vw; justify-content: center; flex-wrap: wrap;
+    }
+    .timeline__media-item {
+      width: min(38vw, 190px);
+      aspect-ratio: 9/16;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .timeline__media-item img, .timeline__media-item video { width: 100%; height: 100%; object-fit: cover; }
+    .timeline__era[data-era="FOREVER"] .timeline__media-item { width: min(50vw, 240px); aspect-ratio: 3/4; }
+
+    .cinema {
+      background: #000;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .cinema__title { position: absolute; top: 6vh; left: 0; right: 0; text-align: center; z-index: 8; padding: 0 8vw; }
+    .cinema__title.hide { opacity: 0; pointer-events: none; }
+    .cinema__stage {
+      position: relative;
+      width: min(88vw, 420px);
+      aspect-ratio: 9/16;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+    }
+    .cinema__clip {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.9s ease;
+    }
+    .cinema__clip.active { opacity: 1; z-index: 2; }
+    .cinema__scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 40%; background: linear-gradient(180deg, transparent, rgba(0,0,0,0.85)); z-index: 3; pointer-events: none; }
+    .cinema__ui { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; padding: 16px; }
+    .cinema__label { font-family: var(--serif); font-style: italic; font-size: 0.95rem; margin-bottom: 8px; }
+    .cinema__count { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--ivory-dim); margin-bottom: 8px; }
+    .cinema__progress { height: 2px; background: rgba(255,255,255,0.22); border-radius: 2px; overflow: hidden; margin-bottom: 12px; }
+    .cinema__progress-fill { height: 100%; background: var(--champagne); width: 0%; }
+    .cinema__controls { display: flex; align-items: center; gap: 14px; }
+    .cinema__btn {
+      background: none; border: none; color: var(--ivory); cursor: pointer;
+      width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
+      opacity: 0.85; transition: opacity 0.2s;
+    }
+    .cinema__btn:hover { opacity: 1; }
+    .cinema__btn svg { width: 18px; height: 18px; fill: currentColor; }
+    .cinema__tap-zone { position: absolute; inset: 0; z-index: 3; cursor: pointer; }
+
+    .letter { background: var(--ink); display: flex; align-items: center; justify-content: center; }
+    .letter__inner { max-width: 560px; padding: 12vh 8vw; text-align: left; }
+    .letter__heading { margin-bottom: 1em; }
+    .letter__p {
+      font-family: var(--serif);
+      font-size: clamp(1.05rem, 2.8vw, 1.35rem);
+      line-height: 1.85;
+      color: var(--ivory-dim);
+      margin: 0 0 1.1em;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
+    }
+    .letter__p.in { opacity: 1; transform: translateY(0); }
+    .letter__sig { margin-top: 1.6em; font-family: var(--serif); font-style: italic; color: var(--beige); opacity: 0; transition: opacity 1.2s var(--ease); }
+    .letter__sig.in { opacity: 1; }
+
+    .future { position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .future__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.22; }
+    .future__scrim { position: absolute; inset: 0; background: rgba(11,9,8,0.55); }
+    .future__content { position: relative; z-index: 5; text-align: center; padding: 8vh 7vw; }
+    .future__list { list-style: none; padding: 0; margin: 1.6em 0; display: flex; flex-direction: column; gap: 0.55em; }
+    .future__list li { font-family: var(--serif); font-size: clamp(1.1rem, 3.6vw, 1.5rem); opacity: 0.2; transition: opacity 0.7s var(--ease); }
+    .future__list li.in { opacity: 1; }
+    .future__big { margin-top: 0.4em; }
+    .future__small { margin-top: 0.3em; color: var(--ivory-dim); }
+
+    .surprise { background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+    .surprise__count {
+      position: absolute; inset: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--serif);
+      font-size: clamp(4rem, 20vw, 9rem);
+      color: var(--ivory);
+      background: #000;
+    }
+    .surprise__count.hidden { display: none; }
+    .surprise__photo {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+      opacity: 0; transform: scale(1.06);
+      transition: opacity 1.4s var(--ease), transform 2.2s var(--ease);
+    }
+    .surprise__photo.in { opacity: 1; transform: scale(1); }
+    .surprise__scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.7)); z-index: 2; }
+    .surprise__content { position: relative; z-index: 5; text-align: center; padding: 0 7vw; opacity: 0; transition: opacity 1.4s var(--ease) 0.4s; }
+    .surprise__content.in { opacity: 1; }
+    .surprise__after { margin-top: 1em; }
+    .surprise__particles { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+    .particle {
+      position: absolute; bottom: -5%;
+      width: 4px; height: 4px; border-radius: 50%;
+      background: var(--champagne);
+      opacity: 0;
+      animation: rise linear forwards;
+    }
+    @keyframes rise {
+      0% { opacity: 0; transform: translateY(0) translateX(0); }
+      10% { opacity: 0.8; }
+      100% { opacity: 0; transform: translateY(-100vh) translateX(var(--drift, 20px)); }
+    }
+
+    .final { background: #000; display: flex; align-items: center; justify-content: center; }
+    .final__glow {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--champagne);
+      box-shadow: 0 0 30px 10px rgba(230,211,179,0.35);
+      margin: 0 auto 3em;
+      animation: pulse 3.4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 0.5; transform: scale(0.9); } 50% { opacity: 1; transform: scale(1.15); } }
+    .final__content { text-align: center; padding: 0 8vw; }
+    .final__line { opacity: 0; transform: translateY(10px); transition: opacity 1.1s var(--ease), transform 1.1s var(--ease); margin-bottom: 0.4em; }
+    .final__line.in { opacity: 1; transform: translateY(0); }
+    .final__replay {
+      margin-top: 2.6em;
+      background: none;
+      border: 1px solid var(--line);
+      color: var(--ivory-dim);
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      padding: 1em 1.8em;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.35s var(--ease);
+    }
+    .final__replay:hover { border-color: var(--champagne); color: var(--ivory); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.3s !important;
+        scroll-behavior: auto !important;
+      }
+      .hero__photo, .versions__media { transform: none !important; }
+    }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <div class="progress-line-mobile" id="progressLineMobile"></div>
+  <nav class="progress-nav" id="progressNav" aria-label="Story progress"></nav>
+
+  <button class="music-control" id="musicControl" aria-label="Play music" aria-pressed="false">
+    <svg viewBox="0 0 20 20"><rect class="bar bar1" x="3" y="9" width="2.4" height="8"/><rect class="bar bar2" x="8.8" y="4" width="2.4" height="13"/><rect class="bar bar3" x="14.6" y="7" width="2.4" height="10"/></svg>
+  </button>
+  <audio id="bgAudio" loop preload="auto"></audio>
+
+  <main id="story">
+    <section class="screen intro" id="s0-intro" data-section="Intro">
+      <img class="intro__bg" id="introBg" alt="" />
+      <div class="grain"></div>
+      <div class="intro__content">
+        <p class="intro__line1" id="introLine1"></p>
+        <p class="intro__line2" id="introLine2"></p>
+        <button class="intro__btn" id="introBtn"></button>
+      </div>
+    </section>
+
+    <div id="storyBody" style="visibility:hidden;">
+      <section class="screen hero" id="s1-hero" data-section="Happy Birthday">
+        <img class="hero__photo" id="heroPhoto" alt="Portrait, birthday hero image" />
+        <div class="hero__scrim"></div>
+        <div class="vignette"></div>
+        <div class="grain"></div>
+        <div class="hero__content">
+          <h1 class="display-xl hero__heading" id="heroHeading"></h1>
+          <p class="body-text wide hero__sub" id="heroSub" style="color:var(--ivory-dim)"></p>
+        </div>
+        <div class="hero__hint" id="heroHint"></div>
+      </section>
+
+      <section class="fellfor" id="s2-fellfor" data-section="The Girl I Fell For">
+        <div class="fellfor__words" id="fellforWords"></div>
+        <div class="fellfor__grid" id="fellforGrid"></div>
+        <div class="fellfor__closing" id="fellforClosing"></div>
+      </section>
+
+      <section class="screen usintro" id="s3-usintro" data-section="And Then There Was Us">
+        <div class="grain"></div>
+        <div class="usintro__inner">
+          <div class="usintro__video-frame" id="usVideoFrame">
+            <video id="usVideo" muted loop playsinline preload="none"></video>
+          </div>
+          <div class="usintro__lines" id="usLines"></div>
+        </div>
+      </section>
+
+      <section class="wall" id="s4-wall" data-section="Our Little Moments">
+        <div class="wall__title">
+          <h2 class="display-md">Our little moments together.</h2>
+          <p class="wall__intro">A few of the memories we made together.</p>
+        </div>
+        <div class="wall__grid" id="wallGrid"></div>
+      </section>
+
+      <section class="versions" id="s5-versions" data-section="Many Versions of You"></section>
+      <section class="lovelist" id="s6-love" data-section="Things I Love About You"></section>
+
+      <section class="timeline" id="s7-timeline" data-section="Our Story">
+        <div class="timeline__rail"></div>
+        <div id="timelineEras"></div>
+      </section>
+
+      <section class="screen cinema" id="s8-cinema" data-section="Our Cinema">
+        <h2 class="display-sm cinema__title" id="cinemaTitle"></h2>
+        <div class="cinema__stage" id="cinemaStage">
+          <div class="cinema__scrim"></div>
+          <div class="cinema__tap-zone" id="cinemaTapZone"></div>
+          <div class="cinema__ui">
+            <div class="cinema__label" id="cinemaLabel"></div>
+            <div class="cinema__count" id="cinemaCount"></div>
+            <div class="cinema__progress"><div class="cinema__progress-fill" id="cinemaFill"></div></div>
+            <div class="cinema__controls">
+              <button class="cinema__btn" id="cinemaPlay" aria-label="Play/Pause">
+                <svg id="cinemaPlayIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <button class="cinema__btn" id="cinemaMute" aria-label="Mute/Unmute">
+                <svg id="cinemaMuteIcon" viewBox="0 0 24 24"><path d="M16.5 12A4.5 4.5 0 0014 8v8a4.49 4.49 0 002.5-4zM5 9v6h4l5 5V4L9 9H5z"/></svg>
+              </button>
+              <button class="cinema__btn" id="cinemaPrev" aria-label="Previous clip">
+                <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+              </button>
+              <button class="cinema__btn" id="cinemaNext" aria-label="Next clip">
+                <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen letter" id="s9-letter" data-section="A Letter">
+        <div class="letter__inner">
+          <h2 class="display-md letter__heading" id="letterHeading"></h2>
+          <div id="letterBody"></div>
+          <p class="letter__sig italic-serif" id="letterSig"></p>
+        </div>
+      </section>
+
+      <section class="screen future" id="s10-future" data-section="The Future">
+        <video class="future__bg" id="futureBg" muted loop playsinline preload="none"></video>
+        <div class="future__scrim"></div>
+        <div class="grain"></div>
+        <div class="future__content">
+          <div id="futureLines" class="stack"></div>
+          <ul class="future__list" id="futureList"></ul>
+          <h2 class="display-xl future__big" id="futureBig"></h2>
+          <p class="body-text future__small" id="futureSmall" style="margin:0.4em auto 0;"></p>
+        </div>
+      </section>
+
+      <section class="screen surprise" id="s11-surprise" data-section="Birthday Surprise">
+        <div class="surprise__count" id="surpriseCount">3</div>
+        <img class="surprise__photo" id="surprisePhoto" alt="" />
+        <div class="surprise__scrim"></div>
+        <div class="surprise__particles" id="surpriseParticles"></div>
+        <div class="surprise__content" id="surpriseContent">
+          <h1 class="display-lg" id="surpriseReveal"></h1>
+          <div id="surpriseAfter" class="stack" style="margin-top:1em;"></div>
+        </div>
+      </section>
+
+      <section class="screen final" id="s12-final" data-section="Final">
+        <div class="final__content">
+          <div class="final__glow"></div>
+          <div id="finalLines"></div>
+          <button class="final__replay" id="replayBtn"></button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const SITE = {
+      recipientName: "My Love",
+      audioSrc: "music/theme.mp3",
+
+      intro: {
+        line1: "I made something for you...",
+        line2: "Not a gift you can hold.\nSomething you can feel.",
+        button: "OPEN YOUR SURPRISE",
+        bgPhoto: "images/portrait-02.jpg",
+      },
+
+      hero: {
+        photo: "images/portrait-03.jpg",
+        heading: "Happy Birthday,\nMy Love.",
+        sub: "Today isn't just about celebrating the day you were born — it's about celebrating the woman who became such a beautiful part of my life.",
+        scrollHint: "SCROLL TO BEGIN",
+      },
+
+      girlIFellFor: {
+        words: ["Beautiful.", "Strong.", "Funny.", "Unforgettable."],
+        closing: ["There are so many things I could say about you...", "But somehow, every word still feels too small."],
+        photos: [
+          { src: "images/portrait-01.jpg", alt: "Close portrait, soft light", size: "large" },
+          { src: "images/portrait-05.jpg", alt: "Direct gaze, red earrings", size: "small" },
+          { src: "images/portrait-04.jpg", alt: "Playful close-up", size: "full" },
+          { src: "images/portrait-02.jpg", alt: "Eyes closed, quiet moment", size: "overlap" },
+        ],
+      },
+
+      usIntro: {
+        lines: ["Somewhere along the way...", "you became my person.", "And suddenly, ordinary moments weren't ordinary anymore."],
+        video: "videos/couple-early-02.mp4",
+        poster: "images/portrait-02.jpg",
+      },
+
+      memoryWall: [
+        { type: "video", src: "videos/couple-early-01.mp4", caption: "The beginning of us.", rotate: -2 },
+        { type: "video", src: "videos/couple-early-02.mp4", caption: "One of my favorite moments.", rotate: 1.5 },
+        { type: "video", src: "videos/couple-sunday.mp4", caption: "That day together.", rotate: 2 },
+        { type: "video", src: "videos/couple-saturday.mp4", caption: "I would live these moments again.", rotate: -1 },
+      ],
+
+      versions: [
+        { label: "You dressed up.", type: "video", src: "videos/solo-green-dress.mp4", poster: "images/portrait-03.jpg" },
+        { label: "You being playful.", type: "video", src: "videos/solo-playful.mp4", poster: "images/portrait-04.jpg" },
+        { label: "You being effortlessly beautiful.", type: "photo", src: "images/portrait-03.jpg" },
+        { label: "You just being you.", type: "video", src: "videos/solo-pink.mp4", poster: "images/portrait-05.jpg" },
+        { closing: "And somehow, I love every version of you." },
+      ],
+
+      loveList: [
+        { n: "01", title: "Your smile", body: "Because somehow it can change the entire mood of a room.", img: "images/portrait-01.jpg" },
+        { n: "02", title: "Your heart", body: "The way you care. The way you love.", img: "images/portrait-02.jpg" },
+        { n: "03", title: "Your strength", body: "Even when you don't realize how strong you are.", img: "images/portrait-03.jpg" },
+        { n: "04", title: "Your little habits", body: "Even the ones I pretend to complain about.", img: "images/portrait-04.jpg" },
+        { n: "05", title: "The way you make life feel", body: "Like I'm exactly where I'm supposed to be.", img: "images/portrait-05.jpg" },
+      ],
+      loveClosing: { pre: "But honestly...", big: "I just love YOU." },
+
+      timeline: [
+        {
+          era: "THEN",
+          date: "September, 2024",
+          text: "The first pictures we ever took together. I didn't know yet how much you'd come to mean to me.",
+          media: [
+            { type: "video", src: "videos/couple-early-01.mp4", poster: "images/portrait-01.jpg" },
+            { type: "video", src: "videos/couple-early-02.mp4", poster: "images/portrait-02.jpg" },
+          ],
+        },
+        {
+          era: "SOMEWHERE ALONG THE WAY",
+          date: "January, 2026",
+          text: "Quiet Saturdays, ordinary afternoons, walls that weren't important except that you were standing in front of them.",
+          media: [
+            { type: "video", src: "videos/couple-saturday.mp4", poster: "images/portrait-05.jpg" },
+            { type: "video", src: "videos/couple-outdoor.mp4", poster: "images/portrait-04.jpg" },
+            { type: "video", src: "videos/couple-warmlight.mp4", poster: "images/portrait-01.jpg" },
+          ],
+        },
+        {
+          era: "NOW",
+          date: "2026",
+          text: "Still choosing each other. Still finding new things to love.",
+          media: [
+            { type: "video", src: "videos/solo-pink.mp4", poster: "images/portrait-05.jpg" },
+            { type: "video", src: "videos/solo-green-dress.mp4", poster: "images/portrait-03.jpg" },
+          ],
+        },
+        {
+          era: "FOREVER",
+          date: "",
+          text: "Whatever comes next, I want it with you.",
+          media: [
+            { type: "photo", src: "images/portrait-03.jpg" },
+          ],
+        },
+      ],
+
+      cinema: {
+        title: "If our memories were a movie...",
+        clips: [
+          { src: "videos/couple-early-01.mp4", poster: "images/portrait-01.jpg", label: "The beginning" },
+          { src: "videos/couple-early-02.mp4", poster: "images/portrait-02.jpg", label: "Close" },
+          { src: "videos/couple-sunday.mp4", poster: "images/portrait-03.jpg", label: "Sunday, 1:05pm" },
+          { src: "videos/couple-saturday.mp4", poster: "images/portrait-05.jpg", label: "Saturday night" },
+          { src: "videos/couple-outdoor.mp4", poster: "images/portrait-04.jpg", label: "Outside" },
+          { src: "videos/couple-warmlight.mp4", poster: "images/portrait-01.jpg", label: "Warm light" },
+          { src: "videos/solo-playful.mp4", poster: "images/portrait-04.jpg", label: "You, being you" },
+          { src: "videos/solo-pink.mp4", poster: "images/portrait-05.jpg", label: "Just talking" },
+          { src: "videos/solo-green-dress.mp4", poster: "images/portrait-03.jpg", label: "Dressed up" },
+          { src: "videos/solo-closeup.mp4", poster: "images/portrait-02.jpg", label: "This moment" },
+        ],
+      },
+
+      letter: {
+        heading: "My Love,",
+        paragraphs: [
+          "Today I celebrate you.",
+          "Not only because it's your birthday, but because this day gave the world someone who would eventually become such an important part of my life.",
+          "We've shared laughs, random moments, beautiful memories, and moments that probably seemed ordinary at the time...",
+          "but those ordinary moments are some of the ones I treasure most.",
+          "And as I look at everything we've shared, one thing becomes clearer to me...",
+          "I don't just want more memories with you.",
+          "I want a life full of them.",
+        ],
+        signature: "Your future husband",
+      },
+
+      future: {
+        lines: ["We've already made beautiful memories...", "But I think the best ones are still ahead."],
+        list: ["More adventures.", "More laughter.", "More random pictures.", "More difficult days we get through together.", "More birthdays."],
+        big: "More LIFE.",
+        small: "With you.",
+        bgMedia: { type: "video", src: "videos/couple-warmlight.mp4", poster: "images/portrait-01.jpg" },
+      },
+
+      surprise: {
+        photo: "images/portrait-03.jpg",
+        reveal: "HAPPY BIRTHDAY, MY LOVE",
+        after: ["You deserve to be celebrated today...", "and every day after."],
+      },
+
+      final: {
+        lines: ["Until our next chapter...", "I love you.", "Forever isn't long enough."],
+        replay: "REPLAY OUR STORY",
+      },
+    };
+
+    (() => {
+      "use strict";
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let storyStarted = false;
+
+      function setVH() {
+        document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+      }
+      setVH();
+      window.addEventListener("resize", setVH);
+      window.addEventListener("orientationchange", setVH);
+
+      const lazyIO = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const el = entry.target;
+          if (entry.isIntersecting) {
+            if (el.dataset.src && !el.src) el.src = el.dataset.src;
+            if (el.tagName === "VIDEO" && storyStarted) {
+              const p = el.play();
+              if (p) p.catch(() => {});
+            }
+          }
+        });
+      }, { rootMargin: "180px 0px", threshold: 0.15 });
+
+      function observeLazy(el) { lazyIO.observe(el); }
+
+      function makeImg({ src, alt = "", className = "" }) {
+        const img = document.createElement("img");
+        img.dataset.src = src;
+        img.alt = alt;
+        if (className) img.className = className;
+        img.loading = "lazy";
+        observeLazy(img);
+        return img;
+      }
+
+      function makeVideo({ src, poster, className = "", muted = true, loop = true }) {
+        const v = document.createElement("video");
+        v.dataset.src = src;
+        if (poster) v.poster = poster;
+        v.muted = muted;
+        v.loop = loop;
+        v.autoplay = false;
+        v.playsInline = true;
+        v.controls = true;
+        v.preload = "metadata";
+        if (className) v.className = className;
+        observeLazy(v);
+        return v;
+      }
+
+      const revealIO = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            revealIO.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      function revealAll(selector, root = document) {
+        root.querySelectorAll(selector).forEach((el) => {
+          if (reducedMotion) { el.classList.add("in"); return; }
+          revealIO.observe(el);
+        });
+      }
+
+      function initIntro() {
+        const bg = document.getElementById("introBg");
+        bg.src = SITE.intro.bgPhoto;
+        document.getElementById("introLine1").textContent = SITE.intro.line1;
+        document.getElementById("introLine2").textContent = SITE.intro.line2;
+        const btn = document.getElementById("introBtn");
+        btn.textContent = SITE.intro.button + " ♡";
+
+        const seq = [
+          document.getElementById("introLine1"),
+          document.getElementById("introLine2"),
+          btn,
+        ];
+        seq.forEach((el, i) => {
+          el.style.transition = "opacity 1.4s ease, transform 1.4s ease";
+          el.style.transform = "translateY(10px)";
+          setTimeout(() => {
+            el.style.opacity = 1;
+            el.style.transform = "translateY(0)";
+          }, 400 + i * 650);
+        });
+
+        btn.addEventListener("click", openStory, { once: true });
+      }
+
+      function openStory() {
+        const intro = document.getElementById("s0-intro");
+        const body = document.getElementById("storyBody");
+        document.getElementById("musicControl").disabled = false;
+        storyStarted = true;
+        tryStartAudio();
+        startAllVideosMuted();
+
+        intro.style.transition = "opacity 1s ease";
+        intro.style.opacity = 0;
+        setTimeout(() => {
+          intro.style.display = "none";
+          body.style.visibility = "visible";
+          document.getElementById("progressNav").classList.add("visible");
+          document.getElementById("musicControl").classList.add("visible");
+          window.scrollTo(0, 0);
+          window.dispatchEvent(new Event("scroll"));
+        }, 950);
+      }
+
+      function initHero() {
+        const el = document.getElementById("s1-hero");
+        document.getElementById("heroPhoto").src = SITE.hero.photo;
+        document.getElementById("heroHeading").textContent = SITE.hero.heading;
+        document.getElementById("heroSub").textContent = SITE.hero.sub;
+        document.getElementById("heroHint").textContent = SITE.hero.scrollHint + " ↓";
+
+        new IntersectionObserver((entries) => {
+          entries.forEach((e) => e.isIntersecting && el.classList.add("in-view"));
+        }, { threshold: 0.4 }).observe(el);
+      }
+
+      function initFellFor() {
+        const wordsWrap = document.getElementById("fellforWords");
+        SITE.girlIFellFor.words.forEach((w) => {
+          const p = document.createElement("p");
+          p.className = "fellfor__word";
+          p.textContent = w;
+          wordsWrap.appendChild(p);
+        });
+
+        const wordIO = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("active"); wordIO.unobserve(e.target); } });
+        }, { threshold: 0.7 });
+        wordsWrap.querySelectorAll(".fellfor__word").forEach((w) => wordIO.observe(w));
+
+        const grid = document.getElementById("fellforGrid");
+        SITE.girlIFellFor.photos.forEach((p) => {
+          const wrap = document.createElement("div");
+          wrap.className = `fellfor__img-wrap ${p.size}`;
+          wrap.appendChild(makeImg({ src: p.src, alt: p.alt }));
+          grid.appendChild(wrap);
+        });
+
+        const closing = document.getElementById("fellforClosing");
+        SITE.girlIFellFor.closing.forEach((line) => {
+          const p = document.createElement("p");
+          p.className = "body-text reveal";
+          p.style.margin = "0 auto 0.6em";
+          p.textContent = line;
+          closing.appendChild(p);
+        });
+
+        revealAll(".fellfor__img-wrap", grid);
+        document.querySelectorAll(".fellfor__img-wrap").forEach((w) => w.classList.remove("reveal"));
+        const imgIO = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); imgIO.unobserve(e.target); } });
+        }, { threshold: 0.25 });
+        grid.querySelectorAll(".fellfor__img-wrap").forEach((w) => reducedMotion ? w.classList.add("in") : imgIO.observe(w));
+
+        revealAll(".fellfor__closing .reveal", closing);
+      }
+
+      function initUsIntro() {
+        const frame = document.getElementById("usVideoFrame");
+        const video = document.getElementById("usVideo");
+        video.dataset.src = SITE.usIntro.video;
+        video.poster = SITE.usIntro.poster;
+        observeLazy(video);
+
+        const linesWrap = document.getElementById("usLines");
+        SITE.usIntro.lines.forEach((l) => {
+          const p = document.createElement("p");
+          p.className = "usintro__line";
+          p.textContent = l;
+          linesWrap.appendChild(p);
+        });
+
+        new IntersectionObserver((entries) => {
+          entries.forEach((e) => e.isIntersecting && frame.classList.add("in"));
+        }, { threshold: 0.35 }).observe(frame);
+
+        const lineIO = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("active"); lineIO.unobserve(e.target); } });
+        }, { threshold: 0.7 });
+        linesWrap.querySelectorAll(".usintro__line").forEach((l) => lineIO.observe(l));
+      }
+
+      function initWall() {
+        const grid = document.getElementById("wallGrid");
+        SITE.memoryWall.forEach((item) => {
+          const wrap = document.createElement("div");
+          wrap.className = "wall__item";
+          wrap.style.setProperty("--r", `${item.rotate || 0}deg`);
+
+          const frame = document.createElement("div");
+          frame.className = "wall__media-frame";
+          if (item.type === "photo") {
+            frame.appendChild(makeImg({ src: item.src, alt: item.caption || "" }));
+          } else {
+            const video = document.createElement("video");
+            video.className = "wall__video";
+            video.src = item.src;
+            video.controls = true;
+            video.preload = "metadata";
+            video.playsInline = true;
+            video.load();
+            frame.appendChild(video);
+          }
+          wrap.appendChild(frame);
+          if (item.type === "photo") wrap.appendChild(frame);
+
+          const cap = document.createElement("p");
+          cap.className = "wall__caption";
+          cap.textContent = item.caption;
+          wrap.appendChild(cap);
+
+          grid.appendChild(wrap);
+        });
+        revealAllStaggered(".wall__item", grid);
+      }
+
+      function revealAllStaggered(selector, root) {
+        const items = root.querySelectorAll(selector);
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0.25 });
+        items.forEach((el) => reducedMotion ? el.classList.add("in") : io.observe(el));
+      }
+
+      function initVersions() {
+        const section = document.getElementById("s5-versions");
+        SITE.versions.forEach((v) => {
+          if (v.closing) {
+            const closing = document.createElement("div");
+            closing.className = "versions__closing";
+            const h = document.createElement("h2");
+            h.className = "display-md";
+            h.textContent = v.closing;
+            closing.appendChild(h);
+            section.appendChild(closing);
+            return;
+          }
+          const slide = document.createElement("div");
+          slide.className = "versions__slide";
+
+          let mediaEl;
+          if (v.type === "video") {
+            mediaEl = makeVideo({ src: v.src, poster: v.poster, className: "versions__media" });
+          } else {
+            mediaEl = makeImg({ src: v.src, className: "versions__media" });
+          }
+          slide.appendChild(mediaEl);
+
+          const label = document.createElement("h2");
+          label.className = "display-md versions__label";
+          label.textContent = v.label;
+          slide.appendChild(label);
+
+          section.appendChild(slide);
+
+          new IntersectionObserver((entries) => {
+            entries.forEach((e) => e.isIntersecting && slide.classList.add("in-view"));
+          }, { threshold: 0.45 }).observe(slide);
+        });
+      }
+
+      function initLoveList() {
+        const section = document.getElementById("s6-love");
+        SITE.loveList.forEach((item) => {
+          const wrap = document.createElement("div");
+          wrap.className = "love__item";
+          wrap.appendChild(makeImg({ src: item.img, className: "love__item-bg" }));
+          const scrim = document.createElement("div");
+          scrim.className = "love__item-scrim";
+          wrap.appendChild(scrim);
+
+          const content = document.createElement("div");
+          content.className = "love__item-content";
+          content.innerHTML = `
+            <div class="love__n italic-serif">${item.n}</div>
+            <h3 class="display-md love__title">${item.title}</h3>
+            <p class="body-text love__body">${item.body}</p>
+          `;
+          wrap.appendChild(content);
+          section.appendChild(wrap);
+        });
+
+        const final = document.createElement("div");
+        final.className = "love__final";
+        final.innerHTML = `
+          <p class="body-text pre" style="margin:0 auto;">${SITE.loveClosing.pre}</p>
+          <h2 class="display-xl">${SITE.loveClosing.big}</h2>
+        `;
+        section.appendChild(final);
+      }
+
+      function initTimeline() {
+        const wrap = document.getElementById("timelineEras");
+        SITE.timeline.forEach((era) => {
+          const eraEl = document.createElement("div");
+          eraEl.className = "timeline__era";
+          eraEl.dataset.era = era.era;
+
+          const mediaHtml = document.createElement("div");
+          mediaHtml.className = "timeline__media-row";
+          era.media.forEach((m) => {
+            const item = document.createElement("div");
+            item.className = "timeline__media-item";
+            item.appendChild(m.type === "video"
+              ? makeVideo({ src: m.src, poster: m.poster })
+              : makeImg({ src: m.src }));
+            mediaHtml.appendChild(item);
+          });
+
+          eraEl.innerHTML = `
+            <div class="timeline__dot"></div>
+            <div class="timeline__label">${era.era}</div>
+            ${era.date ? `<div class="timeline__date">${era.date}</div>` : ""}
+            <p class="body-text timeline__text" style="margin-left:auto;margin-right:auto;">${era.text}</p>
+          `;
+          eraEl.appendChild(mediaHtml);
+          wrap.appendChild(eraEl);
+        });
+        revealAllStaggered(".timeline__era", wrap);
+      }
+
+      function initCinema() {
+        const stage = document.getElementById("cinemaStage");
+        const clips = SITE.cinema.clips;
+        document.getElementById("cinemaTitle").textContent = SITE.cinema.title;
+
+        const videoEls = clips.map((c, i) => {
+          const v = document.createElement("video");
+          v.className = "cinema__clip";
+          v.playsInline = true;
+          v.preload = "none";
+          v.poster = c.poster;
+          v.muted = true;
+          stage.insertBefore(v, stage.firstChild);
+          return v;
+        });
+
+        let current = 0;
+        let userMuted = true;
+        let isPlaying = false;
+        let rafId = null;
+        const cinemaSection = document.getElementById("s8-cinema");
+
+        function loadClip(i, autoplay) {
+          const v = videoEls[i];
+          if (!v.src) v.src = clips[i].src;
+          videoEls.forEach((el, idx) => el.classList.toggle("active", idx === i));
+          document.getElementById("cinemaLabel").textContent = clips[i].label || "";
+          document.getElementById("cinemaCount").textContent = `${String(i + 1).padStart(2, "0")} / ${String(clips.length).padStart(2, "0")}`;
+          videoEls.forEach((el, idx) => { if (idx !== i) el.pause(); });
+          if (autoplay) {
+            v.currentTime = 0;
+            const p = v.play();
+            if (p) p.catch(() => {});
+          }
+          const next = videoEls[(i + 1) % videoEls.length];
+          if (!next.src) next.src = clips[(i + 1) % clips.length].src;
+        }
+
+        function updatePlayIcon() {
+          const icon = document.getElementById("cinemaPlayIcon");
+          icon.innerHTML = isPlaying
+            ? '<path d="M6 5h4v14H6zm8 0h4v14h-4z"/>'
+            : '<path d="M8 5v14l11-7z"/>';
+        }
+        function updateMuteIcon() {
+          const icon = document.getElementById("cinemaMuteIcon");
+          icon.innerHTML = userMuted
+            ? '<path d="M16.5 12A4.5 4.5 0 0014 8v8a4.49 4.49 0 002.5-4zM5 9v6h4l5 5V4L9 9H5zm12.5-6.5L4 16" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M5 9v6h4l5 5V4L9 9H5z"/>'
+            : '<path d="M16.5 12A4.5 4.5 0 0014 8v8a4.49 4.49 0 002.5-4zM5 9v6h4l5 5V4L9 9H5z"/>';
+        }
+
+        function tick() {
+          const v = videoEls[current];
+          if (v.duration) {
+            document.getElementById("cinemaFill").style.width = `${(v.currentTime / v.duration) * 100}%`;
+          }
+          rafId = requestAnimationFrame(tick);
+        }
+
+        videoEls.forEach((v) => {
+          v.addEventListener("ended", () => {
+            current = (current + 1) % videoEls.length;
+            loadClip(current, true);
+          });
+        });
+
+        document.getElementById("cinemaPlay").addEventListener("click", () => {
+          const v = videoEls[current];
+          if (v.paused) { v.play(); isPlaying = true; } else { v.pause(); isPlaying = false; }
+          updatePlayIcon();
+        });
+        document.getElementById("cinemaTapZone").addEventListener("click", () => {
+          document.getElementById("cinemaPlay").click();
+        });
+        document.getElementById("cinemaMute").addEventListener("click", () => {
+          userMuted = !userMuted;
+          videoEls.forEach((v) => v.muted = userMuted);
+          updateMuteIcon();
+        });
+        document.getElementById("cinemaPrev").addEventListener("click", () => {
+          current = (current - 1 + videoEls.length) % videoEls.length;
+          loadClip(current, true);
+        });
+        document.getElementById("cinemaNext").addEventListener("click", () => {
+          current = (current + 1) % videoEls.length;
+          loadClip(current, true);
+        });
+
+        new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting && storyStarted) {
+              if (!videoEls[current].src) loadClip(current, true);
+              else { videoEls[current].play().catch(() => {}); isPlaying = true; updatePlayIcon(); }
+              if (!rafId) tick();
+            } else {
+              videoEls[current].pause();
+              isPlaying = false;
+              updatePlayIcon();
+              if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+            }
+          });
+        }, { threshold: 0.6 }).observe(cinemaSection);
+
+        updateMuteIcon();
+      }
+
+      function initLetter() {
+        document.getElementById("letterHeading").textContent = SITE.letter.heading;
+        const body = document.getElementById("letterBody");
+        SITE.letter.paragraphs.forEach((line) => {
+          const p = document.createElement("p");
+          p.className = "letter__p";
+          p.textContent = line;
+          body.appendChild(p);
+        });
+        document.getElementById("letterSig").textContent = "— " + SITE.letter.signature + " ❤";
+
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+        }, { threshold: 0.6 });
+        body.querySelectorAll(".letter__p").forEach((p) => reducedMotion ? p.classList.add("in") : io.observe(p));
+
+        const sig = document.getElementById("letterSig");
+        new IntersectionObserver((entries) => {
+          entries.forEach((e) => e.isIntersecting && sig.classList.add("in"));
+        }, { threshold: 0.8 }).observe(sig);
+      }
+
+      function initFuture() {
+        const bg = document.getElementById("futureBg");
+        bg.dataset.src = SITE.future.bgMedia.src;
+        bg.poster = SITE.future.bgMedia.poster;
+        observeLazy(bg);
+
+        const linesWrap = document.getElementById("futureLines");
+        SITE.future.lines.forEach((l) => {
+          const p = document.createElement("p");
+          p.className = "display-sm reveal";
+          p.textContent = l;
+          linesWrap.appendChild(p);
+        });
+
+        const list = document.getElementById("futureList");
+        SITE.future.list.forEach((l) => {
+          const li = document.createElement("li");
+          li.textContent = l;
+          list.appendChild(li);
+        });
+
+        document.getElementById("futureBig").textContent = SITE.future.big;
+        document.getElementById("futureSmall").textContent = SITE.future.small;
+
+        revealAll(".future__list li", list);
+        const liIO = new IntersectionObserver((entries) => {
+          entries.forEach(() => {
+            const items = Array.from(list.children);
+            items.forEach((li, i) => setTimeout(() => li.classList.add("in"), i * 180));
+            liIO.disconnect();
+          });
+        }, { threshold: 0.5 });
+        liIO.observe(list);
+
+        const lineIO = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); lineIO.unobserve(e.target); } });
+        }, { threshold: 0.6 });
+        linesWrap.querySelectorAll(".reveal").forEach((el) => reducedMotion ? el.classList.add("in") : lineIO.observe(el));
+      }
+
+      function initSurprise() {
+        const section = document.getElementById("s11-surprise");
+        const countEl = document.getElementById("surpriseCount");
+        const photo = document.getElementById("surprisePhoto");
+        const content = document.getElementById("surpriseContent");
+        photo.src = SITE.surprise.photo;
+        document.getElementById("surpriseReveal").textContent = SITE.surprise.reveal + " ❤";
+        const after = document.getElementById("surpriseAfter");
+        SITE.surprise.after.forEach((l) => {
+          const p = document.createElement("p");
+          p.className = "body-text wide";
+          p.style.margin = "0 auto";
+          p.textContent = l;
+          after.appendChild(p);
+        });
+
+        let played = false;
+        new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting && !played) {
+              played = true;
+              runCountdown();
+            }
+          });
+        }, { threshold: 0.7 }).observe(section);
+
+        function runCountdown() {
+          if (reducedMotion) { reveal(); return; }
+          let n = 3;
+          countEl.textContent = n;
+          const iv = setInterval(() => {
+            n -= 1;
+            if (n > 0) {
+              countEl.textContent = n;
+            } else {
+              clearInterval(iv);
+              countEl.classList.add("hidden");
+              reveal();
+            }
+          }, 800);
+        }
+
+        function reveal() {
+          photo.classList.add("in");
+          content.classList.add("in");
+          spawnParticles();
+        }
+
+        function spawnParticles() {
+          const wrap = document.getElementById("surpriseParticles");
+          const count = 26;
+          for (let i = 0; i < count; i++) {
+            const p = document.createElement("div");
+            p.className = "particle";
+            p.style.left = `${Math.random() * 100}%`;
+            p.style.setProperty("--drift", `${(Math.random() - 0.5) * 80}px`);
+            p.style.animationDuration = `${4 + Math.random() * 3}s`;
+            p.style.animationDelay = `${Math.random() * 2}s`;
+            wrap.appendChild(p);
+          }
+        }
+      }
+
+      function initFinal() {
+        const wrap = document.getElementById("finalLines");
+        SITE.final.lines.forEach((l, i) => {
+          const p = document.createElement(i === SITE.final.lines.length - 1 ? "h2" : "p");
+          p.className = (i === SITE.final.lines.length - 1 ? "display-md" : "body-text") + " final__line";
+          p.style.margin = "0 auto 0.4em";
+          p.textContent = l;
+          wrap.appendChild(p);
+        });
+        const btn = document.getElementById("replayBtn");
+        btn.textContent = SITE.final.replay + " ↻";
+        btn.classList.add("final__line");
+
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              const items = wrap.querySelectorAll(".final__line");
+              items.forEach((el, i) => setTimeout(() => el.classList.add("in"), i * 400));
+              setTimeout(() => btn.classList.add("in"), items.length * 400 + 300);
+            }
+          });
+        }, { threshold: 0.7 });
+        io.observe(document.getElementById("s12-final"));
+
+        btn.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: reducedMotion ? "auto" : "smooth" });
+          setTimeout(() => location.reload(), reducedMotion ? 0 : 700);
+        });
+      }
+
+      function initProgress() {
+        const sections = Array.from(document.querySelectorAll("#storyBody [data-section]"));
+        const nav = document.getElementById("progressNav");
+        const ticks = sections.map((s) => {
+          const t = document.createElement("div");
+          t.className = "tick";
+          t.title = s.dataset.section;
+          t.addEventListener("click", () => s.scrollIntoView({ behavior: "smooth" }));
+          nav.appendChild(t);
+          return t;
+        });
+
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            const idx = sections.indexOf(e.target);
+            if (e.isIntersecting) {
+              ticks.forEach((t) => t.classList.remove("active"));
+              ticks[idx].classList.add("active");
+            }
+          });
+        }, { threshold: 0.5 });
+        sections.forEach((s) => io.observe(s));
+
+        const mobileLine = document.getElementById("progressLineMobile");
+        window.addEventListener("scroll", () => {
+          const scrollTop = window.scrollY;
+          const height = document.body.scrollHeight - window.innerHeight;
+          mobileLine.style.width = `${Math.min(100, (scrollTop / height) * 100)}%`;
+        }, { passive: true });
+      }
+
+      let audioReady = false;
+      function initAudio() {
+        const audio = document.getElementById("bgAudio");
+        const btn = document.getElementById("musicControl");
+        if (!SITE.audioSrc) return;
+
+        btn.disabled = true;
+        audio.src = SITE.audioSrc;
+        audio.load();
+        audio.addEventListener("canplaythrough", () => { audioReady = true; }, { once: true });
+        audio.addEventListener("error", () => { btn.style.display = "none"; }, { once: true });
+
+        btn.addEventListener("click", () => {
+          if (audio.paused) { audio.play().catch(() => {}); btn.classList.add("playing"); btn.setAttribute("aria-pressed", "true"); }
+          else { audio.pause(); btn.classList.remove("playing"); btn.setAttribute("aria-pressed", "false"); }
+        });
+      }
+      function tryStartAudio() {
+        const audio = document.getElementById("bgAudio");
+        const btn = document.getElementById("musicControl");
+        audio.play().then(() => {
+          btn.classList.add("playing");
+          btn.setAttribute("aria-pressed", "true");
+        }).catch(() => {});
+      }
+
+      function startAllVideosMuted() {
+        document.querySelectorAll("video").forEach((video) => {
+          if (video.dataset.src && !video.src) video.src = video.dataset.src;
+          video.muted = true;
+          video.loop = true;
+          video.autoplay = true;
+          video.playsInline = true;
+          video.preload = "metadata";
+          video.load();
+          const playback = video.play();
+          if (playback) playback.catch(() => {});
+        });
+      }
+
+      function boot() {
+        initIntro();
+        initHero();
+        initFellFor();
+        initUsIntro();
+        initWall();
+        initVersions();
+        initLoveList();
+        initTimeline();
+        initCinema();
+        initLetter();
+        initFuture();
+        initSurprise();
+        initFinal();
+        initProgress();
+        initAudio();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", boot);
+      } else {
+        boot();
+      }
+    })();
+  </script>
+</body>
+</html>

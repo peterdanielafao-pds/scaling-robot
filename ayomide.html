@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>For Ayomide</title>
+<meta name="description" content="A private cinematic birthday story." />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap">
+<style>
+/* =========================================================
+   AYOMIDE'S BIRTHDAY EXPERIENCE — STYLESHEET
+   -----------------------------------------------------------
+   Design tokens live at the top of this block. If you want to
+   change the overall color mood, start there.
+   ========================================================= */
+
+:root{
+  /* ---- palette ---- */
+  --ink:        #0a0908;   /* deep black, base background */
+  --ink-soft:   #14100f;   /* slightly lifted black, for panels */
+  --wine:       #3d0f16;   /* dark burgundy */
+  --wine-deep:  #240a0e;   /* darker burgundy, for gradients */
+  --ember:      #7a2e33;   /* muted rose-ember, glows/accents */
+  --gold:       #c9a66b;   /* champagne gold, headlines/dividers */
+  --gold-soft:  #e3cda0;   /* lighter gold, hover/emphasis */
+  --paper:      #f3efea;   /* soft white, body text on dark */
+  --paper-dim:  rgba(243,239,234,0.62);
+
+  /* ---- type ---- */
+  --serif: 'Cormorant Garamond', 'Iowan Old Style', Georgia, serif;
+  --sans:  'Jost', 'Helvetica Neue', Arial, sans-serif;
+
+  /* ---- rhythm ---- */
+  --gutter: clamp(1.5rem, 6vw, 4rem);
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+
+html{ scroll-behavior: smooth; }
+
+body{
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.lock-scroll{ overflow: hidden; height: 100%; }
+
+h1, h2, h3, .serif{
+  font-family: var(--serif);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+p{ margin: 0; }
+
+img, video{ max-width: 100%; display: block; }
+
+button{
+  font-family: var(--sans);
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+.visually-hidden{
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* =========================================================
+   SHARED SECTION SCAFFOLDING
+   ========================================================= */
+
+.chapter{
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem var(--gutter);
+  text-align: center;
+  overflow: hidden;
+}
+
+.chapter-inner{
+  position: relative;
+  z-index: 2;
+  max-width: 640px;
+  width: 100%;
+}
+
+.chapter-number{
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  color: var(--gold);
+  opacity: 0.85;
+  margin-bottom: 1.4rem;
+  letter-spacing: 0.08em;
+}
+
+.chapter-title{
+  font-size: clamp(1.9rem, 6vw, 3.1rem);
+  line-height: 1.18;
+  color: var(--paper);
+  margin-bottom: 1.6rem;
+}
+
+.chapter-line{
+  font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+  color: var(--paper-dim);
+  max-width: 34ch;
+  margin: 0 auto 0.85rem;
+  font-weight: 300;
+}
+
+.chapter-line:last-of-type{ margin-bottom: 0; }
+
+.chapter-divider{
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 2rem auto;
+  opacity: 0.7;
+}
+
+/* reveal-on-scroll utility --------------------------------- */
+.reveal{
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 1.1s var(--ease), transform 1.1s var(--ease);
+}
+.reveal.in-view{
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1{ transition-delay: .12s; }
+.reveal-delay-2{ transition-delay: .28s; }
+.reveal-delay-3{ transition-delay: .44s; }
+.reveal-delay-4{ transition-delay: .6s; }
+
+/* background treatments ------------------------------------ */
+.bg-ink{
+  background:
+    radial-gradient(120% 90% at 50% 0%, var(--ink-soft) 0%, var(--ink) 60%);
+}
+
+.bg-wine{
+  background:
+    radial-gradient(140% 100% at 50% 100%, var(--wine) 0%, var(--wine-deep) 45%, var(--ink) 100%);
+}
+
+.bg-glow::before{
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 45% at 50% 40%, rgba(201,166,107,0.14), transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grain::after{
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* =========================================================
+   OPENING SCREEN
+   ========================================================= */
+
+#opening{
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1.4s var(--ease), visibility 1.4s var(--ease);
+}
+
+#opening.hidden{
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.opening-lines{
+  max-width: 90%;
+  text-align: center;
+}
+
+.opening-line{
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.4rem, 5vw, 2.3rem);
+  color: var(--paper);
+  opacity: 0;
+  min-height: 1.4em;
+  transition: opacity 1.6s ease;
+}
+
+.opening-line.show{ opacity: 1; }
+
+.begin-btn{
+  margin-top: 3rem;
+  padding: 0.95rem 2.6rem;
+  border: 1px solid var(--gold);
+  color: var(--gold-soft);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+  border-radius: 2px;
+  background: transparent;
+  opacity: 0;
+  transition: opacity 1.4s ease, background 0.4s ease, color 0.4s ease;
+}
+
+.begin-btn.show{ opacity: 1; }
+
+.begin-btn:hover, .begin-btn:focus-visible{
+  background: var(--gold);
+  color: var(--ink);
+}
+
+/* =========================================================
+   MEDIA CHAPTERS (video / photo backed)
+   ========================================================= */
+
+.media-chapter{
+  padding: 0;
+}
+
+.media-bg{
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.media-bg video, .media-bg img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.92) contrast(1.03);
+}
+
+.media-scrim{
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(10,9,8,0.35) 0%, rgba(10,9,8,0.55) 55%, rgba(10,9,8,0.92) 100%);
+}
+
+.media-chapter .chapter-inner{
+  z-index: 2;
+  padding-bottom: 2rem;
+}
+
+/* =========================================================
+   MEMORY GALLERY
+   ========================================================= */
+
+#gallery{
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  min-height: auto;
+}
+
+.gallery-heading{ margin-bottom: 3rem; }
+
+.gallery-strip{
+  display: flex;
+  gap: 1.4rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding: 1rem var(--gutter) 2.5rem;
+  margin: 0 calc(var(--gutter) * -1);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ember) transparent;
+}
+
+.gallery-strip::-webkit-scrollbar{ height: 6px; }
+.gallery-strip::-webkit-scrollbar-thumb{ background: var(--ember); border-radius: 4px; }
+
+.memory-card{
+  position: relative;
+  flex: 0 0 auto;
+  width: min(78vw, 340px);
+  aspect-ratio: 3/4;
+  scroll-snap-align: center;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--ink-soft);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.5);
+  transform: translateY(0);
+  transition: transform .6s var(--ease);
+}
+
+.memory-card video, .memory-card img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.memory-card video{ background: #000; }
+
+.memory-caption{
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 1.4rem 1.2rem 1.1rem;
+  background: linear-gradient(0deg, rgba(10,9,8,0.85), transparent);
+  text-align: left;
+}
+
+.memory-caption span{
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--gold-soft);
+}
+
+.memory-sound-btn{
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(10,9,8,0.55);
+  border: 1px solid rgba(243,239,234,0.35);
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  backdrop-filter: blur(3px);
+}
+
+/* =========================================================
+   LITTLE THINGS — FLIP CARDS
+   ========================================================= */
+
+.things-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 2.5rem;
+  width: 100%;
+}
+
+@media (min-width: 640px){
+  .things-grid{ grid-template-columns: repeat(3, 1fr); }
+}
+
+.thing-card{
+  position: relative;
+  aspect-ratio: 1/1.05;
+  perspective: 1000px;
+}
+
+.thing-card-inner{
+  position: relative;
+  width: 100%; height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s var(--ease);
+  border: 1px solid rgba(201,166,107,0.35);
+  border-radius: 4px;
+}
+
+.thing-card.flipped .thing-card-inner{ transform: rotateY(180deg); }
+
+.thing-face{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem;
+  backface-visibility: hidden;
+  border-radius: 4px;
+}
+
+.thing-front{
+  background: var(--ink-soft);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(0.95rem, 2.4vw, 1.15rem);
+  color: var(--gold-soft);
+}
+
+.thing-back{
+  background: var(--wine);
+  transform: rotateY(180deg);
+  font-size: 0.85rem;
+  color: var(--paper);
+  line-height: 1.5;
+}
+
+/* =========================================================
+   THE LETTER
+   ========================================================= */
+
+#letter{
+  align-items: flex-start;
+  text-align: left;
+}
+
+#letter .chapter-inner{ max-width: 560px; }
+
+.letter-body{
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 2.3vw, 1.3rem);
+  color: var(--paper-dim);
+  line-height: 1.85;
+  white-space: pre-line;
+}
+
+.letter-signoff{
+  margin-top: 2rem;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--gold);
+  font-size: 1.15rem;
+}
+
+/* =========================================================
+   BIRTHDAY REVEAL
+   ========================================================= */
+
+#birthday-reveal .chapter-title{
+  font-size: clamp(2.1rem, 8vw, 3.6rem);
+}
+
+.reveal-year-line{
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+  color: var(--gold-soft);
+  margin: 0.4rem 0;
+}
+
+.particles{
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle{
+  position: absolute;
+  bottom: -10px;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--gold-soft);
+  opacity: 0;
+  animation: float-up linear infinite;
+}
+
+@keyframes float-up{
+  0%{ opacity: 0; transform: translateY(0) translateX(0); }
+  10%{ opacity: 0.7; }
+  90%{ opacity: 0.5; }
+  100%{ opacity: 0; transform: translateY(-110vh) translateX(var(--drift, 20px)); }
+}
+
+/* =========================================================
+   FULL NAME REVEAL
+   ========================================================= */
+
+#name-reveal{ background: var(--ink); }
+
+.fullname{
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.5rem, 6vw, 2.6rem);
+  line-height: 1.4;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+}
+
+.fullname .ch{
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fullname .ch.show{ opacity: 1; transform: translateY(0); }
+
+.name-footer{
+  margin-top: 2.4rem;
+}
+
+.name-footer p{ color: var(--paper-dim); font-size: 1.05rem; }
+.name-footer p.you-are{ color: var(--gold-soft); font-family: var(--serif); font-style: italic; font-size: 1.3rem; margin-top: 0.3rem; }
+
+/* =========================================================
+   FINAL SURPRISE
+   ========================================================= */
+
+#final-surprise{ background: var(--ink); }
+
+.final-trigger-btn, .replay-btn{
+  margin-top: 2.5rem;
+  padding: 1rem 2.4rem;
+  border: 1px solid var(--gold);
+  color: var(--gold-soft);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  border-radius: 2px;
+  transition: background .4s ease, color .4s ease;
+}
+
+.final-trigger-btn:hover, .final-trigger-btn:focus-visible,
+.replay-btn:hover, .replay-btn:focus-visible{
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.final-reveal-content{
+  display: none;
+  margin-top: 2.5rem;
+}
+
+.final-reveal-content.open{ display: block; }
+
+.final-media{
+  width: min(100%, 380px);
+  margin: 0 auto 2rem;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+}
+
+.final-gallery{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1.5rem auto 2rem;
+  max-width: 620px;
+}
+
+.final-gallery img,
+.final-gallery video{
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 3px;
+  background: #000;
+}
+
+.final-gallery video{ grid-column: span 2; aspect-ratio: 16 / 9; }
+
+.final-message p{
+  font-family: var(--serif);
+  font-size: clamp(1.05rem, 2.3vw, 1.25rem);
+  color: var(--paper-dim);
+  margin-bottom: 0.7rem;
+}
+
+.final-signoff{
+  margin-top: 1.6rem;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--gold);
+}
+
+/* =========================================================
+   MUSIC WIDGET
+   ========================================================= */
+
+#music-widget{
+  position: fixed;
+  bottom: 1.2rem;
+  right: 1.2rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(10,9,8,0.72);
+  border: 1px solid rgba(201,166,107,0.35);
+  backdrop-filter: blur(6px);
+  border-radius: 30px;
+  padding: 0.5rem 0.9rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+
+#music-widget.show{ opacity: 1; transform: translateY(0); }
+
+.music-btn{
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-soft);
+  font-size: 0.85rem;
+  border: 1px solid rgba(201,166,107,0.4);
+}
+
+.music-note{
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+body.music-paused .music-note{ animation-play-state: paused; opacity: 0.35; }
+
+@keyframes pulse{
+  0%, 100%{ transform: scale(1); opacity: 0.5; }
+  50%{ transform: scale(1.6); opacity: 1; }
+}
+
+.volume-range{
+  width: 60px;
+  accent-color: var(--gold);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+#site-footer{
+  padding: 3rem var(--gutter) 4rem;
+  text-align: center;
+  color: var(--paper-dim);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (min-width: 1024px){
+  .chapter{ padding: 8rem var(--gutter); }
+  .letter-body{ font-size: 1.4rem; }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  .reveal{ transition: opacity .3s linear; transform: none; }
+  .particle{ animation: none; display: none; }
+  .music-note{ animation: none; }
+  .thing-card-inner{ transition: none; }
+  .fullname .ch{ transition: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     OPENING SCREEN
+     ========================================================= -->
+<div id="opening">
+  <div class="opening-lines">
+    <p class="opening-line serif">Hey, Ayomide&hellip;</p>
+    <p class="opening-line serif">I made something for you.</p>
+    <p class="opening-line serif">But this isn't just a birthday message.</p>
+    <p class="opening-line serif">It's our story.</p>
+    <button class="begin-btn">Begin Our Story</button>
+  </div>
+</div>
+
+<!-- =========================================================
+     CHAPTER ONE — JSS2
+     ========================================================= -->
+<section class="chapter bg-ink" id="chapter-one">
+  <div class="chapter-inner">
+    <span class="chapter-number reveal">I</span>
+    <h2 class="chapter-title serif reveal reveal-delay-1">Before there was us&hellip;</h2>
+    <div class="chapter-divider reveal reveal-delay-2"></div>
+    <p class="chapter-line reveal reveal-delay-2">Some stories begin with a big moment.</p>
+    <p class="chapter-line reveal reveal-delay-3">Ours didn't.</p>
+    <p class="chapter-line reveal reveal-delay-3">Ours started quietly &mdash; back in JSS 2, I started falling for you.</p>
+    <p class="chapter-line reveal reveal-delay-4">I didn't know it then. But that was the beginning.</p>
+  </div>
+</section>
+
+<!-- =========================================================
+     CHAPTER TWO — SS1
+     ========================================================= -->
+<section class="chapter bg-wine" id="chapter-two">
+  <div class="chapter-inner">
+    <span class="chapter-number reveal">II</span>
+    <h2 class="chapter-title serif reveal reveal-delay-1">Then I found the courage.</h2>
+    <div class="chapter-divider reveal reveal-delay-2"></div>
+    <p class="chapter-line reveal reveal-delay-2">Those feelings kept growing.</p>
+    <p class="chapter-line reveal reveal-delay-3">Until eventually, in SS 1, I found the courage.</p>
+    <p class="chapter-line reveal reveal-delay-4">And that's when we became us.</p>
+  </div>
+</section>
+
+<!-- =========================================================
+     CHAPTER THREE — CROWN CITY
+     (video-01-close.mp4 — REPLACE with real Crown City footage
+      if this isn't the right clip)
+     ========================================================= -->
+<section class="chapter media-chapter grain" id="chapter-three">
+  <div class="media-bg">
+    <video data-src="videos/couple-early-01.mp4" poster="images/portrait-01.jpg" muted loop playsinline controls></video>
+  </div>
+  <div class="media-scrim"></div>
+  <div class="chapter-inner">
+    <span class="chapter-number reveal">III</span>
+    <h2 class="chapter-title serif reveal reveal-delay-1">Then there was Crown City&hellip;</h2>
+    <div class="chapter-divider reveal reveal-delay-2"></div>
+    <p class="chapter-line reveal reveal-delay-2">By then, we were already us.</p>
+    <p class="chapter-line reveal reveal-delay-3">And then came a moment I'll always remember.</p>
+    <p class="chapter-line reveal reveal-delay-4">Our first romantic experience. Our first kiss.</p>
+  </div>
+</section>
+
+<!-- =========================================================
+     CHAPTER FOUR — 2019, THE CAKE
+     (no matching photo uploaded yet — text-only until you add one.
+      To add a photo: drop it in images/ and uncomment the
+      <img> line below, updating the filename.)
+     ========================================================= -->
+<section class="chapter bg-ink bg-glow" id="chapter-four">
+  <div class="chapter-inner">
+    <span class="chapter-number reveal">IV</span>
+    <h2 class="chapter-title serif reveal reveal-delay-1">One birthday I'll always remember.</h2>
+    <div class="chapter-divider reveal reveal-delay-2"></div>
+    <p class="chapter-line reveal reveal-delay-2">2019. My 18th birthday.</p>
+    <p class="chapter-line reveal reveal-delay-3">And you gave me a cake.</p>
+    <p class="chapter-line reveal reveal-delay-4">Maybe it was just a cake. But to me, it became a memory.</p>
+    <!-- <img src="images/YOUR-CAKE-PHOTO.jpg" alt="" style="margin-top:2rem;border-radius:3px;" class="reveal reveal-delay-4"> -->
+  </div>
+</section>
+
+<!-- =========================================================
+     CHAPTER FIVE — MEMORY GALLERY
+     ========================================================= -->
+<section class="chapter bg-ink" id="gallery">
+  <div class="chapter-inner gallery-heading">
+    <span class="chapter-number reveal">V</span>
+    <h2 class="chapter-title serif reveal reveal-delay-1">Our memories.</h2>
+  </div>
+
+  <div class="gallery-strip">
+    <div class="memory-card reveal">
+      <video data-src="videos/couple-early-01.mp4" poster="images/portrait-01.jpg" muted loop playsinline controls></video>
+      <button class="memory-sound-btn" aria-label="Toggle sound">&#128263;</button>
+      <div class="memory-caption"><span>The beginning of us.</span></div>
+    </div>
+    <div class="memory-card reveal reveal-delay-1">
+      <video data-src="videos/couple-early-02.mp4" poster="images/portrait-02.jpg" muted loop playsinline controls></video>
+      <button class="memory-sound-btn" aria-label="Toggle sound">&#128263;</button>
+      <div class="memory-caption"><span>One of my favorite moments.</span></div>
+    </div>
+    <div class="memory-card reveal reveal-delay-2">
+      <video data-src="videos/couple-saturday.mp4" poster="images/portrait-03.jpg" muted loop playsinline controls></video>
+      <button class="memory-sound-btn" aria-label="Toggle sound">&#128263;</button>
+      <div class="memory-caption"><span>Saturday together.</span></div>
+    </div>
+    <div class="memory-card reveal">
+      <video data-src="videos/couple-sunday.mp4" poster="images/portrait-04.jpg" muted loop playsinline controls></video>
+      <button class="memory-sound-btn" aria-label="Toggle sound">&#128263;</button>
+      <div class="memory-caption"><span>That Sunday with you.</span></div>
+    </div>
+    <div class="memory-card reveal reveal-delay-1">
+      <video data-src="videos/couple-outdoor.mp4" poster="images/portrait-05.jpg" muted loop playsinline controls></video>
+      <button class="memory-sound-btn" aria-label="Toggle sound">&#128263;</button>
+      <div class="memory-caption"><span>Somewhere green, somewhere calm.</span></div>
+    </div>
+    <div class="memory-card reveal reveal-delay-2">
+      <video data-src="videos/couple-warmlight.mp4" poster="images/portrait-01.jpg" muted loop playsinline controls></video>
+      <button class="memory-sound-btn" aria-label="Toggle sound">&#128263;</button>
+      <div class="memory-caption"><span>Warm light, shared memories.</span></div>
+    </div>
+    <div class="memory-card reveal">
+      <video data-src="videos/solo-closeup.mp4" poster="images/portrait-02.jpg" muted loop playsinline controls></video>
+      <button class="memory-sound-btn" aria-label="Toggle sound">&#128263;</button>
+      <div class="memory-caption"><span>You, exactly as you are.</span></div>
+    </div>
+    <div class="memory-card reveal reveal-delay-1">
+      <video data-src="videos/solo-green-dress.mp4" poster="images/portrait-03.jpg" muted loop playsinline controls></video>
+      <button class="memory-sound-btn" aria-label="Toggle sound">&#128263;</button>
+      <div class="memory-caption"><span>You dressed up.</span></div>
+    </div>
+    <div class="memory-card reveal reveal-delay-2">
+      <video data-src="videos/solo-pink.mp4" poster="images/portrait-04.jpg" muted loop playsinline controls></video>
+      <button class="memory-sound-btn" aria-label="Toggle sound">&#128263;</button>
+      <div class="memory-caption"><span>Just being you.</span></div>
+    </div>
+    <div class="memory-card reveal">
+      <video data-src="videos/solo-playful.mp4" poster="images/portrait-05.jpg" muted loop playsinline controls></video>
+      <button class="memory-sound-btn" aria-label="Toggle sound">&#128263;</button>
+      <div class="memory-caption"><span>Your playful side.</span></div>
+    </div>
+    <div class="memory-card reveal reveal-delay-1">
+      <img src="images/portrait-01.jpg" alt="Ayomide" loading="lazy">
+      <div class="memory-caption"><span>Your beautiful smile.</span></div>
+    </div>
+    <div class="memory-card reveal reveal-delay-2">
+      <img src="images/portrait-02.jpg" alt="Ayomide" loading="lazy">
+      <div class="memory-caption"><span>A quiet moment.</span></div>
+    </div>
+    <div class="memory-card reveal">
+      <img src="images/portrait-03.jpg" alt="Ayomide" loading="lazy">
+      <div class="memory-caption"><span>You, exactly as you are.</span></div>
+    </div>
+    <div class="memory-card reveal reveal-delay-1">
+      <img src="images/portrait-04.jpg" alt="Ayomide" loading="lazy">
+      <div class="memory-caption"><span>Your playful smile.</span></div>
+    </div>
+    <div class="memory-card reveal reveal-delay-2">
+      <img src="images/portrait-05.jpg" alt="Ayomide" loading="lazy">
+      <div class="memory-caption"><span>Unforgettable you.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     CHAPTER SIX — THE LITTLE THINGS
+     ========================================================= -->
+<section class="chapter bg-wine" id="little-things">
+  <div class="chapter-inner">
+    <span class="chapter-number reveal">VI</span>
+    <h2 class="chapter-title serif reveal reveal-delay-1">Things I love about you&hellip;</h2>
+    <p class="chapter-line reveal reveal-delay-2">Tap each one.</p>
+    <div class="things-grid" id="things-grid"></div>
+  </div>
+</section>
+
+<!-- =========================================================
+     CHAPTER SEVEN — TO MY FUTURE WIFE (LETTER)
+     ========================================================= -->
+<section class="chapter bg-ink" id="letter">
+  <div class="chapter-inner">
+    <span class="chapter-number reveal">VII</span>
+    <h2 class="chapter-title serif reveal reveal-delay-1">To my future wife&hellip;</h2>
+    <div class="chapter-divider reveal reveal-delay-2"></div>
+    <p class="letter-body reveal reveal-delay-3" id="letter-body-text"></p>
+    <p class="letter-signoff reveal reveal-delay-4" data-config="myName"></p>
+  </div>
+</section>
+
+<!-- =========================================================
+     CHAPTER EIGHT — THE FUTURE
+     ========================================================= -->
+<section class="chapter bg-wine bg-glow" id="future">
+  <div class="chapter-inner">
+    <span class="chapter-number reveal">VIII</span>
+    <h2 class="chapter-title serif reveal reveal-delay-1">This isn't the end of our story.</h2>
+    <div class="chapter-divider reveal reveal-delay-2"></div>
+    <p class="chapter-line reveal reveal-delay-2">We've already created memories I'll never forget.</p>
+    <p class="chapter-line reveal reveal-delay-3">But there are still so many chapters waiting for us.</p>
+    <p class="chapter-line reveal reveal-delay-4">More laughter. More memories. More birthdays. More life together.</p>
+  </div>
+</section>
+
+<!-- =========================================================
+     CHAPTER NINE — BIRTHDAY REVEAL
+     ========================================================= -->
+<section class="chapter bg-ink bg-glow media-chapter" id="birthday-reveal">
+  <div class="media-bg">
+    <img src="images/portrait-01.jpg" alt="Ayomide" loading="lazy">
+  </div>
+  <div class="media-scrim"></div>
+  <div class="particles"></div>
+  <div class="chapter-inner">
+    <h2 class="chapter-title serif reveal">Happy Birthday, my love &#10084;</h2>
+    <p class="reveal-year-line reveal reveal-delay-1" data-config="dateOfBirth"></p>
+    <p class="chapter-line reveal reveal-delay-1">The day the world got you.</p>
+    <div class="chapter-divider reveal reveal-delay-2"></div>
+    <p class="reveal-year-line reveal reveal-delay-2" data-config="birthdayThisYear"></p>
+    <p class="chapter-line reveal reveal-delay-3">24 years of you.</p>
+    <p class="chapter-title serif reveal reveal-delay-4" style="font-size:clamp(1.5rem,4vw,2rem);margin-top:1.6rem;">Happy 24th Birthday, Ayomide.</p>
+  </div>
+</section>
+
+<!-- =========================================================
+     CHAPTER TEN — FULL NAME REVEAL
+     ========================================================= -->
+<section class="chapter bg-ink" id="name-reveal">
+  <div class="chapter-inner">
+    <p class="fullname" id="fullname-text"></p>
+    <div class="chapter-divider reveal"></div>
+    <div class="name-footer reveal">
+      <p>To the world, you're Ayomide.</p>
+      <p class="you-are">To me&hellip; you are so much more.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FINAL SURPRISE
+     ========================================================= -->
+<section class="chapter bg-ink" id="final-surprise">
+  <div class="chapter-inner">
+    <p class="chapter-line reveal serif" style="font-style:italic;font-size:1.4rem;">Wait&hellip;</p>
+    <p class="chapter-line reveal reveal-delay-1" style="margin-top:0.6rem;">There's one more thing.</p>
+    <button class="final-trigger-btn reveal reveal-delay-2" id="final-trigger">Open Your Final Surprise &#10084;</button>
+
+    <div class="final-reveal-content" id="final-content">
+      <div class="final-media">
+        <video data-src="videos/solo-pink.mp4" poster="images/portrait-04.jpg" muted loop playsinline controls></video>
+      </div>
+      <div class="final-gallery" aria-label="More memories">
+        <img src="images/portrait-01.jpg" alt="Ayomide smiling">
+        <img src="images/portrait-02.jpg" alt="Ayomide in a quiet moment">
+        <img src="images/portrait-03.jpg" alt="Ayomide">
+        <img src="images/portrait-04.jpg" alt="Ayomide being playful">
+        <img src="images/portrait-05.jpg" alt="Ayomide">
+        <video data-src="videos/couple-sunday.mp4" muted loop playsinline controls></video>
+        <video data-src="videos/couple-saturday.mp4" muted loop playsinline controls></video>
+      </div>
+      <div class="final-message" id="final-message-text"></div>
+      <p class="final-signoff">Happy 24th Birthday, Ayomide. &#10084;<br>&mdash; <span data-config="myName"></span></p>
+    </div>
+  </div>
+</section>
+
+<footer id="site-footer">
+  <p>Made with love, one memory at a time.</p>
+  <button class="replay-btn" id="replay-btn" type="button">Replay Our Story</button>
+</footer>
+
+<!-- =========================================================
+     MUSIC WIDGET
+     ========================================================= -->
+<div id="music-widget">
+  <audio id="bg-music" loop>
+    <source src="music/theme.mp3" type="audio/mpeg">
+  </audio>
+  <button class="music-btn" id="music-play-toggle" aria-label="Play or pause music">&#9208;</button>
+  <button class="music-btn" id="music-mute-toggle" aria-label="Mute or unmute music">&#128266;</button>
+  <input type="range" class="volume-range" id="music-volume" min="0" max="1" step="0.05" value="0.5" aria-label="Volume">
+  <span class="music-note"></span>
+</div>
+
+<script>
+/* =========================================================
+   SITE CONFIG
+   -----------------------------------------------------------
+   Edit the values below to personalize the site. Nothing else
+   in this file needs to change for basic edits — text content,
+   captions and the letter all live here.
+   ========================================================= */
+
+const siteConfig = {
+  herName: "Ayomide",
+  fullName: "Ayomide Opeyemi Anike Omolara Titilope Oriyomi Olaoluwakitan",
+  myName: "Oluwashina Ayomi",
+  dateOfBirth: "September 9, 2002",
+  birthdayThisYear: "September 9, 2026",
+  age: 24,
+
+  // ---- THE LETTER --------------------------------------------------
+  // Paste your own personal letter here. Use a blank line for a new
+  // paragraph.
+  loveLetter:
+`PASTE YOUR PERSONAL LETTER HERE.
+
+Write it the way you'd actually say it to her — this placeholder
+is intentionally left for you to replace before you send this site.`,
+
+  // ---- FINAL MESSAGE ------------------------------------------------
+  // Shown under the final surprise media. Edit freely.
+  finalMessage: [
+    "Happy Birthday, my love.",
+    "I hope this little piece of the internet reminds you of something simple.",
+    "You are loved.",
+    "You are appreciated.",
+    "And I am grateful for every moment we share.",
+    "Thank you for being part of my story.",
+    "Here's to every memory we've made, and every beautiful chapter still waiting for us."
+  ],
+
+  // ---- "LITTLE THINGS" CARDS -----------------------------------------
+  // Each has a short front label and a longer message on the back.
+  // These are placeholder examples — replace with your real ones.
+  littleThings: [
+    { front: "Your smile", back: "It changes the whole room, every single time." },
+    { front: "Your heart", back: "The way you care for people, quietly and completely." },
+    { front: "The way you laugh", back: "I don't think I'll ever get tired of hearing it." },
+    { front: "Your presence", back: "Some people fill a room. You fill a whole day." },
+    { front: "The little things you do", back: "The ones you don't even think about — I notice all of them." },
+    { front: "Simply being you", back: "That's always been more than enough." }
+  ],
+
+  // ---- MUSIC ----------------------------------------------------------
+  musicPath: "music/theme.mp3",
+  musicDefaultVolume: 0.5
+};
+
+/* =========================================================
+   OPENING SEQUENCE (re-runnable, so Replay can restart it)
+   ========================================================= */
+
+function runOpeningSequence(){
+  const lines = document.querySelectorAll('.opening-line');
+  const beginBtn = document.querySelector('.begin-btn');
+
+  lines.forEach(l => l.classList.remove('show'));
+  beginBtn.classList.remove('show');
+
+  let delay = 500;
+  const stepGap = 2200;
+
+  lines.forEach((line) => {
+    setTimeout(() => line.classList.add('show'), delay);
+    delay += stepGap;
+  });
+
+  setTimeout(() => beginBtn.classList.add('show'), delay);
+}
+
+function initOpening(){
+  const beginBtn = document.querySelector('.begin-btn');
+  const opening = document.getElementById('opening');
+
+  document.body.classList.add('lock-scroll');
+  runOpeningSequence();
+
+  beginBtn.addEventListener('click', () => {
+    opening.classList.add('hidden');
+    document.body.classList.remove('lock-scroll');
+    startMusic();
+    showMusicWidget();
+  });
+}
+
+/* =========================================================
+   SCROLL REVEAL (re-armable, so Replay can re-trigger fades)
+   ========================================================= */
+
+let revealObserver = null;
+
+function armScrollReveal(){
+  const targets = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    targets.forEach(t => t.classList.add('in-view'));
+    return;
+  }
+  if (revealObserver) revealObserver.disconnect();
+  revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.35 });
+
+  targets.forEach(t => revealObserver.observe(t));
+}
+
+/* =========================================================
+   AMBIENT VIDEO LOADING (perf: only load/play near viewport)
+   ========================================================= */
+
+function initAmbientVideos(){
+  const videos = document.querySelectorAll('video[data-src]');
+  videos.forEach(v => {
+    v.src = v.dataset.src;
+    v.muted = true;
+    v.loop = true;
+    v.autoplay = true;
+    v.controls = true;
+    v.preload = 'metadata';
+    v.playsInline = true;
+    v.load();
+    v.play().catch(() => {});
+  });
+}
+
+/* =========================================================
+   MEMORY GALLERY — per-card mute/unmute for the ambient clips
+   ========================================================= */
+
+function initGallerySound(){
+  document.querySelectorAll('.memory-sound-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.memory-card');
+      const video = card.querySelector('video');
+      if (!video) return;
+      video.muted = !video.muted;
+      btn.textContent = video.muted ? '\u{1F507}' : '\u{1F50A}';
+    });
+  });
+}
+
+/* =========================================================
+   LITTLE THINGS FLIP CARDS
+   ========================================================= */
+
+function initFlipCards(){
+  document.querySelectorAll('.thing-card').forEach(card => {
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.classList.toggle('flipped');
+      }
+    });
+  });
+}
+
+/* =========================================================
+   FULL NAME REVEAL — letter by letter as the section scrolls in
+   (build once, re-armable observer so Replay can re-trigger it)
+   ========================================================= */
+
+let nameObserver = null;
+
+function buildFullNameSpans(){
+  const el = document.getElementById('fullname-text');
+  if (!el || el.dataset.built) return;
+  const words = siteConfig.fullName.split(' ');
+  el.innerHTML = '';
+
+  words.forEach((word, wi) => {
+    // Each word is one unbreakable unit so lines only wrap between
+    // words, never mid-name — the browser treats every individual
+    // inline-block letter as its own break opportunity otherwise.
+    const wordSpan = document.createElement('span');
+    wordSpan.className = 'word';
+    wordSpan.style.whiteSpace = 'nowrap';
+    wordSpan.style.display = 'inline-block';
+
+    [...word].forEach((char) => {
+      const span = document.createElement('span');
+      span.className = 'ch';
+      span.textContent = char;
+      wordSpan.appendChild(span);
+    });
+
+    el.appendChild(wordSpan);
+    if (wi < words.length - 1) el.appendChild(document.createTextNode(' '));
+  });
+
+  el.dataset.built = '1';
+}
+
+function armNameReveal(){
+  const el = document.getElementById('fullname-text');
+  if (!el) return;
+  const chars = el.querySelectorAll('.ch');
+  if (nameObserver) nameObserver.disconnect();
+  nameObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        chars.forEach((c, i) => {
+          setTimeout(() => c.classList.add('show'), i * 45);
+        });
+        nameObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  nameObserver.observe(el);
+}
+
+/* =========================================================
+   FINAL SURPRISE
+   ========================================================= */
+
+function initFinalSurprise(){
+  const btn = document.getElementById('final-trigger');
+  const content = document.getElementById('final-content');
+  if (!btn || !content) return;
+  btn.addEventListener('click', () => {
+    content.classList.add('open');
+    btn.style.display = 'none';
+    const video = content.querySelector('video');
+    if (video) {
+      if (!video.src) video.src = video.dataset.src;
+      video.play().catch(() => {});
+    }
+    content.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+}
+
+/* =========================================================
+   MUSIC SYSTEM
+   ========================================================= */
+
+let audioEl = null;
+
+function startMusic(){
+  audioEl = document.getElementById('bg-music');
+  if (!audioEl) return;
+  audioEl.volume = siteConfig.musicDefaultVolume;
+  audioEl.play().catch(() => {
+    // Autoplay blocked or file missing — the widget still lets her press play manually.
+    document.body.classList.add('music-paused');
+  });
+}
+
+function showMusicWidget(){
+  const widget = document.getElementById('music-widget');
+  if (widget) widget.classList.add('show');
+}
+
+function initMusicControls(){
+  const widget = document.getElementById('music-widget');
+  const playBtn = document.getElementById('music-play-toggle');
+  const muteBtn = document.getElementById('music-mute-toggle');
+  const volume = document.getElementById('music-volume');
+  if (!widget) return;
+
+  playBtn.addEventListener('click', () => {
+    if (!audioEl) return;
+    if (audioEl.paused) {
+      audioEl.play().catch(() => {});
+      document.body.classList.remove('music-paused');
+      playBtn.textContent = '\u23F8';
+    } else {
+      audioEl.pause();
+      document.body.classList.add('music-paused');
+      playBtn.textContent = '\u25B6';
+    }
+  });
+
+  muteBtn.addEventListener('click', () => {
+    if (!audioEl) return;
+    audioEl.muted = !audioEl.muted;
+    muteBtn.textContent = audioEl.muted ? '\u{1F507}' : '\u{1F50A}';
+  });
+
+  volume.addEventListener('input', () => {
+    if (!audioEl) return;
+    audioEl.volume = Number(volume.value);
+    if (audioEl.muted && audioEl.volume > 0) {
+      audioEl.muted = false;
+      muteBtn.textContent = '\u{1F50A}';
+    }
+  });
+}
+
+/* =========================================================
+   BIRTHDAY PARTICLES (lightweight, CSS-driven)
+   ========================================================= */
+
+function initParticles(){
+  const container = document.querySelector('.particles');
+  if (!container) return;
+  const count = window.innerWidth < 640 ? 14 : 26;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('span');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (7 + Math.random() * 8) + 's';
+    p.style.animationDelay = (Math.random() * 8) + 's';
+    p.style.setProperty('--drift', (Math.random() * 60 - 30) + 'px');
+    container.appendChild(p);
+  }
+}
+
+/* =========================================================
+   TEXT INJECTION FROM CONFIG
+   (keeps HTML clean while letting config drive real content)
+   ========================================================= */
+
+function injectConfigText(){
+  document.querySelectorAll('[data-config]').forEach(el => {
+    const key = el.dataset.config;
+    if (siteConfig[key] !== undefined) el.textContent = siteConfig[key];
+  });
+
+  const letterBody = document.getElementById('letter-body-text');
+  if (letterBody) letterBody.textContent = siteConfig.loveLetter;
+
+  const finalMsg = document.getElementById('final-message-text');
+  if (finalMsg) {
+    finalMsg.innerHTML = '';
+    siteConfig.finalMessage.forEach(line => {
+      const p = document.createElement('p');
+      p.textContent = line;
+      finalMsg.appendChild(p);
+    });
+  }
+
+  const thingsGrid = document.getElementById('things-grid');
+  if (thingsGrid) {
+    thingsGrid.innerHTML = '';
+    siteConfig.littleThings.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'thing-card';
+      card.innerHTML = `
+        <div class="thing-card-inner">
+          <div class="thing-face thing-front">${item.front}</div>
+          <div class="thing-face thing-back">${item.back}</div>
+        </div>`;
+      thingsGrid.appendChild(card);
+    });
+  }
+}
+
+/* =========================================================
+   REPLAY — resets the experience back to the opening screen
+   ========================================================= */
+
+function initReplay(){
+  const btn = document.getElementById('replay-btn');
+  if (!btn) return;
+
+  btn.addEventListener('click', () => {
+    // reset the final surprise back to its unopened state
+    const finalContent = document.getElementById('final-content');
+    const finalTrigger = document.getElementById('final-trigger');
+    if (finalContent) finalContent.classList.remove('open');
+    if (finalTrigger) finalTrigger.style.display = '';
+
+    // reset music to the start
+    if (audioEl) {
+      audioEl.pause();
+      audioEl.currentTime = 0;
+    }
+    document.body.classList.add('music-paused');
+
+    // reset the full-name letter-by-letter animation
+    document.querySelectorAll('#fullname-text .ch').forEach(c => c.classList.remove('show'));
+    armNameReveal();
+
+    // reset every chapter's fade-in so it replays as she scrolls back down
+    document.querySelectorAll('.reveal').forEach(r => r.classList.remove('in-view'));
+    armScrollReveal();
+
+    // jump back to the top and show the opening screen again
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    const opening = document.getElementById('opening');
+    opening.classList.remove('hidden');
+    document.body.classList.add('lock-scroll');
+    runOpeningSequence();
+  });
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+
+document.addEventListener('DOMContentLoaded', () => {
+  injectConfigText();
+  initOpening();
+  armScrollReveal();
+  initAmbientVideos();
+  initGallerySound();
+  initFlipCards();
+  buildFullNameSpans();
+  armNameReveal();
+  initFinalSurprise();
+  initMusicControls();
+  initParticles();
+  initReplay();
+});
+</script>
+</body>
+</html>
